@@ -6,11 +6,12 @@
 
 <div class="main">
     <div class="top-row px-4">
-        <a href="https://docs.microsoft.com/aspnet/" target="_blank">About</a>
         <CascadingAuthenticationState>
             <AuthorizeView>
                 <Authorized>
-                    <button @onclick="Logout">Logout</button>
+                    <h7 style ="margin: 10px">Welcome, @context.User.Identity.Name!</h7>
+                    <button @onclick="Logout" >Logout</button>
+                    <NavLink @onclick="Logout">Logout</NavLink>
                 </Authorized>
             </AuthorizeView>
         </CascadingAuthenticationState>

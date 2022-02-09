@@ -16,7 +16,6 @@ namespace BlazorApplication.AppStart
                 (sender, cert, chain, sslPolicyErrors) => { return true; };
 
             containerBuilder.RegisterType<LocalStorageService>().As<ILocalStorageService>();
-            //containerBuilder.RegisterType<AuthStateProvider>();
 
             containerBuilder.RegisterType<AuthStateProvider>()
                 .As<AuthenticationStateProvider>().InstancePerLifetimeScope();

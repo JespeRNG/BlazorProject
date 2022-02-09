@@ -1,6 +1,14 @@
 ﻿@page "/panel"
+@inject IUserService userService
+@using BlazorApplication.Enums
 
 <h3>Working Panel</h3>
+
+<style>
+    .tr :hover {
+        background-color: #EFEFEF;
+    }
+</style>
 
 <CascadingAuthenticationState>
     <AuthorizeView Roles="customer, staff">
@@ -10,36 +18,43 @@
         <table class="table">
             <thead>
                 <tr>
-                    <th>Monday</th>
-                    <th>Tuesday</th>
-                    <th>Wednesday</th>
-                    <th>Thursday</th>
-                    <th>Friday</th>
-                    <th>Saturday</th>
-                    <th>Sunday</th>
+                    <th>Username</th>
+                    <th>Firstname</th>
+                    <th>Lastname</th>
+                    <th>Role</th>
+                    <th>Delete</th>
                 </tr>
             </thead>
             <tbody>
-                <tr>
-                    @*@foreach (var item in currentDateTimeValues)
-                    {
-                        @if (counter % 7 == 0 && counter > 0)
+                @code {int counter = 0;}
+                @foreach (var user in userList)
+                {
+                    <tr class="tr">
+                        <td>@user.Username</td>
+                        <td>@user.Firstname</td>
+                        <td>@user.Lastname</td>
+                        <td>@user.Role</td>
+                        @if (user.Role != nameof(RoleEnums.admin))
                         {
-                        @:</tr><tr>
+                            <td><button @onclick="DeleteUser" class="btn btn-danger">Delete</button></td>
                         }
-                        counter++;
-                        <td>@item.ToString("dd.MM.yyyy")</td>
-                    }*@
-                </tr>
+                    </tr>
+                }
             </tbody>
         </table>
-
     </AuthorizeView>
 </CascadingAuthenticationState>
 
 @code {
+    private List<UserModel> userList = new List<UserModel>();
+
     protected override async Task OnInitializedAsync()
     {
-        
+        userList = await userService.GetListOfUsersAsync();
+    }
+
+    private async Task DeleteUser()
+    {
+
     }
 }

@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using BlazorApplication.Model;
 using System.Net.Http.Headers;
 using BlazorApplication.Interfaces;
+using System.Collections.Generic;
 
 namespace BlazorApplication.Services
 {
@@ -29,6 +30,16 @@ namespace BlazorApplication.Services
             var content = await (await _httpClient.GetAsync(BaseUri + "info")).Content.ReadAsStringAsync();
             var userModel = JsonConvert.DeserializeObject<UserModel>(content);
             return userModel;
+        }
+
+        public async Task<List<UserModel>> GetListOfUsersAsync()
+        {
+            var token = await _localStorageService.GetItem<string>("access_token");
+            _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
+
+            var content = await (await _httpClient.GetAsync(BaseUri + "list")).Content.ReadAsStringAsync();
+            var userModelList = JsonConvert.DeserializeObject<List<UserModel>>(content);
+            return userModelList;
         }
     }
 }

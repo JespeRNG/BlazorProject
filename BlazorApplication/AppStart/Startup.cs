@@ -1,13 +1,13 @@
 using Autofac;
 using BlazorApplication.Data;
+using BlazorApplication.Services;
+using BlazorApplication.Providers;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Hosting;
+using BlazorApplication.Interfaces;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using BlazorApplication.Services;
-using BlazorApplication.Interfaces;
-using BlazorApplication.Providers;
 
 namespace BlazorApplication.AppStart
 {
@@ -32,7 +32,6 @@ namespace BlazorApplication.AppStart
             services.AddScoped<ILocalStorageService, LocalStorageService>();
             services.AddOptions();
             services.AddScoped<AuthStateProvider>();
-            //services.AddScoped<AuthenticationStateProvider, AuthStateProvider>();
             services.AddSingleton<WeatherForecastService>();
 
             services.AddRazorPages();

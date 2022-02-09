@@ -1,13 +1,12 @@
-﻿using BlazorApplication.Model;
-using System;
+﻿using System.Threading.Tasks;
+using BlazorApplication.Model;
 using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace BlazorApplication.Interfaces
 {
     public interface IUserService
     {
         Task<UserModel> GetCurrentUserInfoAsync();
+        Task<List<UserModel>> GetListOfUsersAsync();
     }
 }
