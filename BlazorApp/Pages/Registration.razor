@@ -1,0 +1,14 @@
+﻿@page "/registration"
+@inject IAccountService _accService
+
+<h3>Registration Page</h3>
+
+<button class="btn btn-primary" @onclick="Register">Register</button>
+
+@code
+{
+    private async Task Register()
+    {
+        await _accService.RegisterUserAsync();
+    }
+}

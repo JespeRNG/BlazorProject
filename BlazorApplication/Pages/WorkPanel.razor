@@ -1,0 +1,45 @@
+﻿@page "/panel"
+
+<h3>Working Panel</h3>
+
+<CascadingAuthenticationState>
+    <AuthorizeView Roles="customer, staff">
+        Unfortunately you're not able to do anything. You are not admin.
+    </AuthorizeView>
+    <AuthorizeView Roles="admin">
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Monday</th>
+                    <th>Tuesday</th>
+                    <th>Wednesday</th>
+                    <th>Thursday</th>
+                    <th>Friday</th>
+                    <th>Saturday</th>
+                    <th>Sunday</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    @*@foreach (var item in currentDateTimeValues)
+                    {
+                        @if (counter % 7 == 0 && counter > 0)
+                        {
+                        @:</tr><tr>
+                        }
+                        counter++;
+                        <td>@item.ToString("dd.MM.yyyy")</td>
+                    }*@
+                </tr>
+            </tbody>
+        </table>
+
+    </AuthorizeView>
+</CascadingAuthenticationState>
+
+@code {
+    protected override async Task OnInitializedAsync()
+    {
+        
+    }
+}

@@ -1,0 +1,33 @@
+﻿@page "/"
+@inject AuthStateProvider authProvider
+@inject NavigationManager navigationManager
+
+<h1>Main page</h1>
+
+<CascadingAuthenticationState>
+    <AuthorizeView>
+        <Authorized>
+        </Authorized>
+        <NotAuthorized>
+            <h5><b>Looks like you are not authenticated.</b></h5>
+            <NavLink href="register">Register</NavLink>
+            <NavLink href="login">Sign in</NavLink>
+        </NotAuthorized>
+    </AuthorizeView>
+</CascadingAuthenticationState>
+
+@code {
+    [CascadingParameter]
+    protected Task<AuthenticationState> AuthState { get; set; }
+
+    protected async override Task OnInitializedAsync()
+    {
+        base.OnInitialized();
+        var user = (await AuthState).User;
+
+        if (user.Identity.IsAuthenticated)
+        {
+            navigationManager.NavigateTo("/panel");
+        }
+    }
+} 
