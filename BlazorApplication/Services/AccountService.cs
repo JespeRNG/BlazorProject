@@ -14,6 +14,7 @@ namespace BlazorApplication.Services
     {
         private readonly HttpClient _httpClient;
         private readonly ILocalStorageService _localStorageService;
+
         private const string BaseUri = "https://localhost:44333/api/authentication/";
 
         public AccountService(HttpClient httpClient, ILocalStorageService localStorageService)
@@ -38,7 +39,7 @@ namespace BlazorApplication.Services
             var content = new StringContent(JsonConvert.SerializeObject(model), Encoding.UTF8, "application/json");
             var response = await _httpClient.PostAsync(BaseUri + "token", content);
 
-            if (response.StatusCode == HttpStatusCode.Conflict) throw new HttpRequestException();
+            if (response.StatusCode == HttpStatusCode.Conflict) return null;
 
             var json = await response.Content.ReadAsStringAsync();
             var token = JObject.Parse(json)["access_token"].ToString();

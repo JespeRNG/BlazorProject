@@ -14,6 +14,8 @@ namespace BlazorApplication.Providers
         private readonly IAccountService _accService;
         private readonly ILocalStorageService _localStorage;
 
+        private const string AccessTokenKey = "access_token";
+
         public AuthStateProvider(IAccountService accService, ILocalStorageService localStorage, IUserService userService)
         {
             _accService = accService ?? throw new ArgumentNullException(nameof(accService));
@@ -39,18 +41,16 @@ namespace BlazorApplication.Providers
 
         private async Task<UserModel> GetCurrentUser()
         {
-            if (await _localStorage.GetItem<string>("access_token") == null) return null;
+            if (await _localStorage.GetItem<string>(AccessTokenKey) == null) return null;
             var userModel = await _userService.GetCurrentUserInfoAsync();
             return userModel;
         }
 
-        /*public async Task<HttpResponseMessage> Logout()
+        public async Task Logout()
         {
-            var result = await api.Logout();
-            _currentUser = null;
+            await _localStorage.RemoveItem(AccessTokenKey);
             NotifyAuthenticationStateChanged(GetAuthenticationStateAsync());
-            return result;
-        }*/
+        }
 
         public async Task<string> SignInAsync(LoginUserInputModel loginParameters)
         {

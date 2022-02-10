@@ -29,16 +29,19 @@
                 @code {int counter = 0;}
                 @foreach (var user in userList)
                 {
-                    <tr class="tr">
-                        <td>@user.Username</td>
-                        <td>@user.Firstname</td>
-                        <td>@user.Lastname</td>
-                        <td>@user.Role</td>
-                        @if (user.Role != nameof(RoleEnums.admin))
-                        {
-                            <td><button @onclick="DeleteUser" class="btn btn-danger">Delete</button></td>
-                        }
-                    </tr>
+                    if (user.Username != context.User.Identity.Name)
+                    {
+                        <tr class="tr">
+                            <td>@user.Username</td>
+                            <td>@user.Firstname</td>
+                            <td>@user.Lastname</td>
+                            <td>@user.Role</td>
+                            @if (user.Role != nameof(RoleEnums.admin))
+                            {
+                                <td><button @onclick="() => DeleteUser(user.Id)" class="btn btn-danger">Delete</button></td>
+                            }
+                        </tr>
+                    }
                 }
             </tbody>
         </table>
@@ -48,13 +51,18 @@
 @code {
     private List<UserModel> userList = new List<UserModel>();
 
+    private async Task<List<UserModel>> BindListOfUsers() => await userService.GetListOfUsersAsync();
+
     protected override async Task OnInitializedAsync()
     {
-        userList = await userService.GetListOfUsersAsync();
+        userList = await BindListOfUsers();
+        StateHasChanged();
     }
 
-    private async Task DeleteUser()
+    private async Task DeleteUser(long id)
     {
-
+        var statusCode = await userService.DeleteUser(id);
+        userList = await BindListOfUsers();
+        //StateHasChanged();
     }
 }

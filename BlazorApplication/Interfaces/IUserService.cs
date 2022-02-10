@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System.Net;
+using System.Threading.Tasks;
 using BlazorApplication.Model;
 using System.Collections.Generic;
 
@@ -8,5 +9,6 @@ namespace BlazorApplication.Interfaces
     {
         Task<UserModel> GetCurrentUserInfoAsync();
         Task<List<UserModel>> GetListOfUsersAsync();
+        Task<HttpStatusCode> DeleteUser(long id);
     }
 }

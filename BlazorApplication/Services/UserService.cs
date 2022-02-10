@@ -1,11 +1,12 @@
 ﻿using System;
+using System.Net;
 using Newtonsoft.Json;
 using System.Net.Http;
 using System.Threading.Tasks;
 using BlazorApplication.Model;
 using System.Net.Http.Headers;
-using BlazorApplication.Interfaces;
 using System.Collections.Generic;
+using BlazorApplication.Interfaces;
 
 namespace BlazorApplication.Services
 {
@@ -13,7 +14,9 @@ namespace BlazorApplication.Services
     {
         private readonly HttpClient _httpClient;
         private readonly ILocalStorageService _localStorageService;
+
         private const string BaseUri = "https://localhost:44333/api/user/";
+        private const string AccessTokenKey = "access_token";
 
         public UserService(HttpClient httpClient, ILocalStorageService localStorageService)
         {
@@ -23,10 +26,7 @@ namespace BlazorApplication.Services
 
         public async Task<UserModel> GetCurrentUserInfoAsync()
         {
-            var token = await _localStorageService.GetItem<string>("access_token");
-            //if (token == null) throw Exception(); if token == null do bad things
-
-            _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
+            await PutTokenInAuthorizationHeader();
             var content = await (await _httpClient.GetAsync(BaseUri + "info")).Content.ReadAsStringAsync();
             var userModel = JsonConvert.DeserializeObject<UserModel>(content);
             return userModel;
@@ -34,12 +34,24 @@ namespace BlazorApplication.Services
 
         public async Task<List<UserModel>> GetListOfUsersAsync()
         {
-            var token = await _localStorageService.GetItem<string>("access_token");
-            _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
-
+            await PutTokenInAuthorizationHeader();
             var content = await (await _httpClient.GetAsync(BaseUri + "list")).Content.ReadAsStringAsync();
             var userModelList = JsonConvert.DeserializeObject<List<UserModel>>(content);
             return userModelList;
+        }
+
+        public async Task<HttpStatusCode> DeleteUser(long id)
+        {
+            await PutTokenInAuthorizationHeader();
+            var response = await _httpClient.DeleteAsync(BaseUri + $"remove?id={id}");
+            return response.StatusCode;
+        }
+
+        private async Task PutTokenInAuthorizationHeader()
+        {
+            var token = await _localStorageService.GetItem<string>(AccessTokenKey);
+            //if (token == null) throw Exception(); if token == null do bad things
+            _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
         }
     }
 }

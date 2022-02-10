@@ -1,4 +1,6 @@
 ﻿@inherits LayoutComponentBase
+@inject AuthStateProvider authProvider
+@inject NavigationManager navigationManager
 
 <div class="sidebar">
     <NavMenu />
@@ -11,20 +13,19 @@
                 <Authorized>
                     <h7 style ="margin: 10px">Welcome, @context.User.Identity.Name!</h7>
                     <button @onclick="Logout" >Logout</button>
-                    <NavLink @onclick="Logout">Logout</NavLink>
                 </Authorized>
             </AuthorizeView>
         </CascadingAuthenticationState>
     </div>
-
     <div class="content px-4">
         @Body
     </div>
 </div>
-
 @code {
+    private bool ha = false;
     private async Task Logout()
     {
-
+        await authProvider.Logout();
+        navigationManager.NavigateTo($"/login");
     }
 }

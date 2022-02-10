@@ -1,5 +1,4 @@
 using Autofac;
-using BlazorApplication.Data;
 using BlazorApplication.Services;
 using BlazorApplication.Providers;
 using Microsoft.AspNetCore.Builder;
@@ -8,6 +7,7 @@ using Microsoft.Extensions.Hosting;
 using BlazorApplication.Interfaces;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using BlazorApplication.Filters;
 
 namespace BlazorApplication.AppStart
 {
@@ -32,11 +32,11 @@ namespace BlazorApplication.AppStart
             services.AddScoped<ILocalStorageService, LocalStorageService>();
             services.AddOptions();
             services.AddScoped<AuthStateProvider>();
-            services.AddSingleton<WeatherForecastService>();
 
             services.AddRazorPages();
             services.AddServerSideBlazor();
             services.AddCors();
+            services.AddMvc(options => options.Filters.Add(new ExceptionFilter()));
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
