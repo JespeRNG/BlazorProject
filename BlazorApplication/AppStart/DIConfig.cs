@@ -1,8 +1,10 @@
 ﻿using Autofac;
+using AutoMapper;
 using System.Net.Http;
 using BlazorApplication.Services;
 using BlazorApplication.Providers;
 using BlazorApplication.Interfaces;
+using BlazorApplication.MapperProfiles;
 using Microsoft.AspNetCore.Components.Authorization;
 
 namespace BlazorApplication.AppStart
@@ -28,6 +30,11 @@ namespace BlazorApplication.AppStart
                 new UserService(new HttpClient(clientHandler),
                     x.Resolve<ILocalStorageService>())
             ).As<IUserService>().InstancePerLifetimeScope();
+
+            containerBuilder.Register(ctx => new MapperConfiguration(cfg =>
+            {
+                cfg.AddProfile(new UserProfile());
+            }).CreateMapper()).As<IMapper>().InstancePerLifetimeScope();
 
             return containerBuilder;
         }
