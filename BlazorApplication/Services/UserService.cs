@@ -17,6 +17,9 @@ namespace BlazorApplication.Services
         private readonly ILocalStorageService _localStorageService;
 
         private const string BaseUri = "https://localhost:44333/api/user/";
+        private const string UserInfoEndpoint = "info";
+        private const string ListOfUsersEndpoint = "list";
+
         private const string AccessTokenKey = "access_token";
 
         public UserService(HttpClient httpClient, ILocalStorageService localStorageService)
@@ -28,7 +31,7 @@ namespace BlazorApplication.Services
         public async Task<UserDTO> GetCurrentUserInfoAsync()
         {
             await PutTokenInAuthorizationHeader();
-            var content = await (await _httpClient.GetAsync(BaseUri + "info")).Content.ReadAsStringAsync();
+            var content = await (await _httpClient.GetAsync(BaseUri + UserInfoEndpoint)).Content.ReadAsStringAsync();
             var userDTO = JsonConvert.DeserializeObject<UserDTO>(content);
             return userDTO;
         }
@@ -36,7 +39,7 @@ namespace BlazorApplication.Services
         public async Task<List<UserDTO>> GetListOfUsersAsync()
         {
             await PutTokenInAuthorizationHeader();
-            var content = await (await _httpClient.GetAsync(BaseUri + "list")).Content.ReadAsStringAsync();
+            var content = await (await _httpClient.GetAsync(BaseUri + ListOfUsersEndpoint)).Content.ReadAsStringAsync();
             var userDTOList = JsonConvert.DeserializeObject<List<UserDTO>>(content);
             return userDTOList;
         }
