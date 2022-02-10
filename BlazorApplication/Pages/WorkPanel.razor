@@ -1,6 +1,7 @@
 ﻿@page "/panel"
 @inject IUserService userService
 @using BlazorApplication.Enums
+@inject IMapper mapper 
 
 <h3>Working Panel</h3>
 
@@ -51,7 +52,12 @@
 @code {
     private List<UserModel> userList = new List<UserModel>();
 
-    private async Task<List<UserModel>> BindListOfUsers() => await userService.GetListOfUsersAsync();
+    private async Task<List<UserModel>> BindListOfUsers()
+    {
+        var userDTOList = await userService.GetListOfUsersAsync();
+        var userModelList = mapper.Map<List<UserModel>>(userDTOList);
+        return userModelList;
+    }
 
     protected override async Task OnInitializedAsync()
     {

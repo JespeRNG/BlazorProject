@@ -1,12 +1,12 @@
 ﻿using System.Net;
+using BlazorApplication.DTO;
 using System.Threading.Tasks;
-using BlazorApplication.Model;
 
 namespace BlazorApplication.Interfaces
 {
     public interface IAccountService
     {
-        Task<HttpStatusCode> RegisterUserAsync(RegistrationUserInputModel model);
-        Task<string> AuthorizeUserAsync(LoginUserInputModel model);
+        Task<HttpStatusCode> RegisterUserAsync(UserDTO userDTO);
+        Task<string> AuthorizeUserAsync(UserDTO userDTO);
     }
 }

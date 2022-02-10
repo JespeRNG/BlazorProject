@@ -7,6 +7,7 @@ using BlazorApplication.Model;
 using System.Net.Http.Headers;
 using System.Collections.Generic;
 using BlazorApplication.Interfaces;
+using BlazorApplication.DTO;
 
 namespace BlazorApplication.Services
 {
@@ -24,20 +25,20 @@ namespace BlazorApplication.Services
             _localStorageService = localStorageService ?? throw new ArgumentNullException(nameof(localStorageService));
         }
 
-        public async Task<UserModel> GetCurrentUserInfoAsync()
+        public async Task<UserDTO> GetCurrentUserInfoAsync()
         {
             await PutTokenInAuthorizationHeader();
             var content = await (await _httpClient.GetAsync(BaseUri + "info")).Content.ReadAsStringAsync();
-            var userModel = JsonConvert.DeserializeObject<UserModel>(content);
-            return userModel;
+            var userDTO = JsonConvert.DeserializeObject<UserDTO>(content);
+            return userDTO;
         }
 
-        public async Task<List<UserModel>> GetListOfUsersAsync()
+        public async Task<List<UserDTO>> GetListOfUsersAsync()
         {
             await PutTokenInAuthorizationHeader();
             var content = await (await _httpClient.GetAsync(BaseUri + "list")).Content.ReadAsStringAsync();
-            var userModelList = JsonConvert.DeserializeObject<List<UserModel>>(content);
-            return userModelList;
+            var userDTOList = JsonConvert.DeserializeObject<List<UserDTO>>(content);
+            return userDTOList;
         }
 
         public async Task<HttpStatusCode> DeleteUser(long id)

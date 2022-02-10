@@ -4,8 +4,8 @@ using System.Text;
 using System.Net.Http;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
+using BlazorApplication.DTO;
 using System.Threading.Tasks;
-using BlazorApplication.Model;
 using BlazorApplication.Interfaces;
 
 namespace BlazorApplication.Services
@@ -23,20 +23,20 @@ namespace BlazorApplication.Services
             _localStorageService = localStorageService ?? throw new ArgumentNullException(nameof(localStorageService));
         }
 
-        public async Task<HttpStatusCode> RegisterUserAsync(RegistrationUserInputModel model)
+        public async Task<HttpStatusCode> RegisterUserAsync(UserDTO userDTO)
         {
-            if (model == null) throw new ArgumentNullException(nameof(model));
+            if (userDTO == null) throw new ArgumentNullException(nameof(userDTO));
 
-            var content = new StringContent(JsonConvert.SerializeObject(model), Encoding.UTF8, "application/json");
+            var content = new StringContent(JsonConvert.SerializeObject(userDTO), Encoding.UTF8, "application/json");
             var response = await _httpClient.PostAsync(BaseUri + "registration", content);
             return response.StatusCode;
         }
 
-        public async Task<string> AuthorizeUserAsync(LoginUserInputModel model)
+        public async Task<string> AuthorizeUserAsync(UserDTO userDTO)
         {
-            if (model == null) throw new ArgumentNullException(nameof(model));
+            if (userDTO == null) throw new ArgumentNullException(nameof(userDTO));
 
-            var content = new StringContent(JsonConvert.SerializeObject(model), Encoding.UTF8, "application/json");
+            var content = new StringContent(JsonConvert.SerializeObject(userDTO), Encoding.UTF8, "application/json");
             var response = await _httpClient.PostAsync(BaseUri + "token", content);
 
             if (response.StatusCode == HttpStatusCode.Conflict) return null;
