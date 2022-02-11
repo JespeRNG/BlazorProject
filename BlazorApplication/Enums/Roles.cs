@@ -1,6 +1,6 @@
 ﻿namespace BlazorApplication.Enums
 {
-    public enum RoleEnums
+    public enum Roles
     {
         admin,
         customer,

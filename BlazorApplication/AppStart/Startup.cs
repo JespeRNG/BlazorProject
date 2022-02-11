@@ -7,7 +7,6 @@ using Microsoft.Extensions.Hosting;
 using BlazorApplication.Interfaces;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using BlazorApplication.Filters;
 
 namespace BlazorApplication.AppStart
 {

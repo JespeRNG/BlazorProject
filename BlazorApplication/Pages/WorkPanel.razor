@@ -37,7 +37,7 @@
                             <td>@user.Firstname</td>
                             <td>@user.Lastname</td>
                             <td>@user.Role</td>
-                            @if (user.Role != nameof(RoleEnums.admin))
+                            @if (user.Role != nameof(Roles.admin))
                             {
                                 <td><button @onclick="() => DeleteUser(user.Id)" class="btn btn-danger">Delete</button></td>
                             }

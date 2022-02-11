@@ -2,12 +2,11 @@
 using System.Net;
 using Newtonsoft.Json;
 using System.Net.Http;
+using BlazorApplication.DTO;
 using System.Threading.Tasks;
-using BlazorApplication.Model;
 using System.Net.Http.Headers;
 using System.Collections.Generic;
 using BlazorApplication.Interfaces;
-using BlazorApplication.DTO;
 
 namespace BlazorApplication.Services
 {
